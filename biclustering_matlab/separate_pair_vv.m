@@ -1,3 +1,13 @@
+% Separation routine for pair inequalities associated to the Zvv block
+%
+% :param Z: solution of the SDP relaxation
+% :param n: number of rows
+% :param m: number of columns
+% :param eps: tolerance for checking the violation
+% :param max_pair: maximum number of inequalities to separate
+% :returns [B_pair, violations]: SDPNAL+ data encoding lhs constraint matrix
+%  and the violation of the associated inequalities
+
 function [B_pair, violations] = separate_pair_vv(Z, n, m, eps, max_pair)
 
     rng(1993);

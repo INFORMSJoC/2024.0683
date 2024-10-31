@@ -1,3 +1,10 @@
+% Function that adds constraints to Zvv
+%
+% :param n: number of rows
+% :param m: number of columns
+% :returns: lhs constraint matrix in SDPNAL+ format encoding
+% Zvv 1_m = 1_m and Trace(Zvv) = k
+
 function [A_rowsum, A_trace] = Z_slice_Zvv(n, m)
 
     A_rowsum = cell(1, m);

@@ -1,3 +1,13 @@
+% Separation routine for triangle inequalities associated to the Zuu block
+%
+% :param Z: solution of the SDP relaxation
+% :param n: number of rows
+% :param m: number of columns
+% :param eps: tolerance for checking the violation
+% :param max_triangle: maximum number of inequalities to separate
+% :returns [B_triangle, violations]: SDPNAL+ data encoding lhs constraint matrix
+%  and the violation of the associated inequalities
+
 function [B_triangle, violations] = separate_triangle_uu(Z, n, m, eps, max_triangle)
     
     rng(1993);

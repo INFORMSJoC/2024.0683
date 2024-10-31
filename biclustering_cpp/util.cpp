@@ -3,6 +3,9 @@
 #include "config_params.h"
 #include <iomanip>
 
+/// This function saves an assignment matrix (U and V) in a file
+/// @param Xu row-assignment matrix
+/// @param Xv column-assignment matrix
 void save_X_to_file(arma::sp_mat &Xu, arma::sp_mat &Xv){
 
     std::ofstream f;
@@ -29,7 +32,7 @@ void save_X_to_file(arma::sp_mat &Xu, arma::sp_mat &Xv){
     f.close();
 }
 
-
+// Prints the header for the B&B log
 void print_header_sdp() {
 
     log_file << "\n" << "|" <<
@@ -55,6 +58,7 @@ void print_header_sdp() {
 
 }
 
+// Prints the log at the node-level
 void print_log_sdp(int n, int m, int node_parent, int node, double ub_parent, double ub, double time,
                    int cp_iter, int cp_flag, int n_ineq, double lb, double glb, int type, int i, int j,
                    double node_gap, double gap, int open, bool update) {

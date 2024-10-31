@@ -1,5 +1,13 @@
 #include "matlab_util.h"
 
+/*
+ * This script contains the implementation of the auxiliary functions used to facilitate interaction
+ * between C++ and MATLAB via the MATLABEngine libraries
+ */
+
+/// Function that adds to the matlab path the specified folder
+/// @param folder_char full path of the folder
+/// @return a string in MATLAB format
 std::u16string generate_path_command(const char *folder_char) {
     std::string folder(folder_char);
     std::string matlab_path = std::string("addpath(genpath('" + folder + "'));");
@@ -7,7 +15,10 @@ std::u16string generate_path_command(const char *folder_char) {
     return path_command;
 }
 
-// start new matlab session
+/// It starts new MATLAB session
+/// @param sdp_solver_folder full path of SDPNAL+
+/// @param gurobi_folder full path of Gurobi
+/// @return pointer to the MATLAB session
 std::unique_ptr<matlab::engine::MATLABEngine> start_matlab(const char *sdp_solver_folder,
                                                            const char *gurobi_folder) {
 
@@ -26,6 +37,11 @@ std::unique_ptr<matlab::engine::MATLABEngine> start_matlab(const char *sdp_solve
     return matlabPtr;
 }
 
+
+/// Auxiliary function to convert an Armadillo matrix into a Matlab matrix
+/// @param factory Matlab factory
+/// @param X Armadillo amtrix
+/// @return Matlab matrix
 matlab::data::TypedArray<double> arma_to_matlab_matrix(matlab::data::ArrayFactory &factory, arma::mat &X) {
 
     std::vector<double> vec_X = arma::conv_to<std::vector<double>>::from(arma::vectorise(X));
@@ -34,6 +50,10 @@ matlab::data::TypedArray<double> arma_to_matlab_matrix(matlab::data::ArrayFactor
 
 }
 
+/// Auxiliary function to convert an Armadillo sparse matrix into a Matlab sparse matrix
+/// @param factory Matlab factory
+/// @param X Armadillo sparse matrix
+/// @return Matlab sparse matrix
 matlab::data::SparseArray<double> arma_to_matlab_sparse(matlab::data::ArrayFactory &factory, arma::sp_mat &X) {
 
     arma::sp_mat::const_iterator start = X.begin();
@@ -73,6 +93,9 @@ matlab::data::SparseArray<double> arma_to_matlab_sparse(matlab::data::ArrayFacto
 
 }
 
+/// Auxiliary function to convert a Matlax matrix into an Armadillo matrix
+/// @param X_matlab Matlab matrix
+/// @return Armadillo matrix
 arma::sp_mat matlab_to_arma_sparse(matlab::data::SparseArray<double> &X_matlab) {
 
     const size_t n = X_matlab.getDimensions()[0];
@@ -87,7 +110,10 @@ arma::sp_mat matlab_to_arma_sparse(matlab::data::SparseArray<double> &X_matlab) 
     return X;
 }
 
-// B operator
+/// Implements the B operator
+/// @param factory Matlab factory
+/// @param B_vector B operator
+/// @return Matlab cell array
 matlab::data::CellArray arma_to_matlab_cell(matlab::data::ArrayFactory &factory, std::vector<arma::sp_mat> &B_vector) {
 
     size_t m = B_vector.size();
@@ -99,6 +125,11 @@ matlab::data::CellArray arma_to_matlab_cell(matlab::data::ArrayFactory &factory,
     return Bcell;
 }
 
+
+/// Converts an Armadillo vector into a Matlab cell array
+/// @param factory Matlab factory
+/// @param B_vector B operator
+/// @return Matlab cell array
 matlab::data::CellArray arma_to_matlab_vector_cell(matlab::data::ArrayFactory &factory,
                                                    std::vector<std::vector<arma::sp_mat>> &B_vector) {
 
@@ -112,6 +143,10 @@ matlab::data::CellArray arma_to_matlab_vector_cell(matlab::data::ArrayFactory &f
 }
 
 
+/// Converts a vector of pairs into a Matlab matrix
+/// @param factory Matlab factory
+/// @param pairs vector of pairs
+/// @return Matlab matrix
 matlab::data::TypedArray<double> vector_pair_to_matlab_matrix(matlab::data::ArrayFactory &factory,
                                                               std::vector<std::pair<int, int>> &pairs) {
     std::size_t n_constraints = pairs.size();

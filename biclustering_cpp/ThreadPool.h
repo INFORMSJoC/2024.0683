@@ -5,6 +5,10 @@
 #include "util.h"
 #include "matlab_util.h"
 
+/*
+ * This class implements a configurable pool of POSIX threads
+ */
+
 class ThreadPool {
 
 private:

@@ -1,8 +1,10 @@
-function [blk, At, b, C, L] = build_biclustering(W, k)
+% Build the SDP relaxation of the k-densest disjoint biclique problem
+%
+% :param W: data matrix (n x m)
+% :param k: number of bicliques
+% :returns [blk, At, b, c, L]: problem data in SDPNAL+ format
 
-    % W: weight matrix n x m
-    % k: number of clusters
-    % return problem data in SDPNAL+ format
+function [blk, At, b, C, L] = build_biclustering(W, k)
 
     [n, m] = size(W);
         

@@ -1,3 +1,14 @@
+% Function that adjusts indices in the inequalities from the root to the
+% other nodes 
+%
+% :param ML_graph_U: graph with connected components between vertices in U
+% :param ML_graph_V: graph with connected components between vertices in U
+% :param init_B_cell: lhs matrix of constraints in SDPNAL+ format
+% :param n: number of rows (reduced)
+% :param m: number of columns (reduced)
+% :param original_n: original number of rows in the problem
+% :returns new_Bcell: adjusted lhs matrix of constraints in SDPNAL+ format
+
 function new_Bcell = shrink_cuts(ML_graph_U, ML_graph_V, init_B_cell, n, m, original_n)
     
     n_ineq = size(init_B_cell, 2);

@@ -15,21 +15,21 @@ get a more recent version or would like support**
 
 To cite the contents of this repository, please cite both the paper and this repo, using their respective DOIs.
 
-https://doi.org/10.1287/ijoc.2019.0000
+https://doi.org/10.1287/ijoc.2024.0683
 
-https://doi.org/10.1287/ijoc.2019.0000.cd
+https://doi.org/10.1287/ijoc.2024.0683.cd
 
 Below is the BibTex for citing this snapshot of the repository.
 
 ```
-@misc{CacheTest,
-  author =        {T. Ralphs},
+@misc{sudoso2024,
+  author =        {A. M. Sudoso},
   publisher =     {INFORMS Journal on Computing},
-  title =         {{CacheTest}},
-  year =          {2020},
-  doi =           {10.1287/ijoc.2019.0000.cd},
-  url =           {https://github.com/INFORMSJoC/2019.0000},
-  note =          {Available for download at https://github.com/INFORMSJoC/2019.0000},
+  title =         {An SDP-based Branch-and-Cut Algorithm for Biclustering},
+  year =          {2024},
+  doi =           {10.1287/ijoc.2024.0683.cd},
+  url =           {https://github.com/INFORMSJoC/2024.0683},
+  note =          {Available for download at https://github.com/INFORMSJoC/2024.0683},
 }  
 ```
 
@@ -82,6 +82,35 @@ Various parameters used in **BICL-SDP** can be modified in the configuration fil
 - `CP_EPS_ACTIVE` - tolerance for detecting active inequalities
 - `GUROBI_FOLDER` - Gurobi solver path
 - `GUROBI_VERBOSE` - do not display log (0), display log (1)
+
+## Source File Description
+
+ Folder `biclustering_cpp`:
+
+- `config_params.h` contains the configurable parameters found in the configuration file `config.txt`.
+ - `JobQueue.cpp` and `JobQueue.h` provide the implementation of the queue that stores the nodes of the branch-and-bound tree.
+ - `main_cpp` contains the routine that reads the parameters from the configuration file `config.txt` and executes the branch-and-cut algorithm.
+ - `matlab_util.cpp` and `matlab_util.h` contain auxiliary functions that facilitate the interaction between C++ and MATLAB.
+- `Node.h` contains the data structures used to represent the branch-and-bound nodes.
+- `sdp_branch_and_bound.cpp` and `sdp_branch_and_bound.h` implement the overall branch-and-cut algorithm, including interfaces with the MATLAB functions `biclustering_matlab/call_solve_biclustering_root.m` and `biclustering_matlab/call_solve_biclustering_child.m`.
+- `ThreadPool.cpp` and `ThreadPool.h` implement a configurable pool of POSIX threads to perform the branch-and-bound search in parallel.
+- `util.cpp` and `util.h` contain auxiliary functions for formatting the branch-and-cut log file.
+
+
+Folder `biclustering_matlab`:
+
+- `add_cannot_link_Zuu.m` and `add_cannot_link_Zvv.m` construct the constraint matrix of the problem with cannot-link constraints.
+- `biclustering_heuristic.m` implements the rounding algorithm using the solution of SDP relaxation.
+- `build_biclustering.m` and `build_biclustering_shrinking.m` build the SDP relaxation for the root and child nodes, respectively.
+- `build_T.m` builds the transformation matrix that allows reducing the size of the SDP relaxation.
+- `call_solve_biclustering_root.m` and `call_solve_biclustering_child.m` contain the function calls for the bound computation, including interfaces with the C++ functions `biclustering_cpp/sdp_branch_and_bound.cpp` and `biclustering_cpp/sdp_branch_and_bound.h`.
+- `get_branching_pair.m` computes the branching decision.
+- `separate_inequalities.m` contains the separation routine for the hypermetric inequalities.
+- `separate_pair_uu.m`, `separate_pair_vv.m`, `separate_triangle_uu.m`, and `separate_triangle_vv.m` contain the separation routines for pair and triangle inequalities for the blocks $Z_{uu}$ and $Z_{vv}$  of $Z$, respectively.
+- `shrink_cuts.m` adjusts the indices of the inequalities when inheriting them from the parent to a child node.
+- `solve_biclustering_root.m` and `solve_biclustering_shrinking.m` implement the SDP-based cutting-plane algorithm for the root node and the child nodes, respectively.
+- `update_CL.m` updates cannot-link constraints when a size reduction is performed.
+- `Z_slice_Zuu.m`, `Z_slice_Zuu_shrinking.m`, `Z_slice_Zvv.m`, and `Z_slice_Zvv_shrinking.m` add constraints to the blocks $Z_{uu}$ and $Z_{vv}$  of $Z$.
 
 ## Usage
 ```

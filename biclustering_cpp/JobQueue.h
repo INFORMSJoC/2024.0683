@@ -1,9 +1,13 @@
 #ifndef CLUSTERING_JOBQUEUE_H
 #define CLUSTERING_JOBQUEUE_H
 
-
 #include <deque>
 #include "Node.h"
+
+/*
+ * This class provides the implementation of the queue that stores the nodes of the branch-and-bound tree.
+ * Depending on the selected visiting strategy, this class implements: Queue, Stack, and PriorityQueue
+ */
 
 class JobAbstractQueue {
 

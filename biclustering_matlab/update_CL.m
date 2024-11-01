@@ -1,3 +1,9 @@
+% Function that updates cannot-link due to size reduction
+%
+% :param ML_graph: graph with connected components
+% :param CL: matrix of cannot-link constraints
+% :returns new_CL: updated matrix of cannot-link constraints
+
 function [new_CL] = update_CL(ML_graph, CL)
 
     n_cl = size(CL, 1);

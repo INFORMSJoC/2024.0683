@@ -1,3 +1,12 @@
+% Function that finds the branching pair from the solution of the SDP
+% relaxation
+%
+% :param Z: solution of the SDP relaxation
+% :param n: number of rows
+% :param m: number of columns
+% :returns branching_type: branch using a pair in U or V
+% :returns i_idx, j_idx, max_val: branching pair (i, j) and violation
+
 function [branching_type, i_idx, j_idx, max_val] = get_branching_pair(Z, n, m)
 
     Zuu = Z(1:n, 1:n);

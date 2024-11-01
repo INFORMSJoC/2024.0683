@@ -1,3 +1,10 @@
+% Function that adds constraints to Zuu
+%
+% :param n: number of rows
+% :param m: number of columns
+% :returns: lhs constraint matrix in SDPNAL+ format encoding
+% Zuu 1_n = 1_n and Trace(Zuu) = k
+
 function [A_rowsum, A_trace] = Z_slice_Zuu(n, m)
 
     A_rowsum = cell(1, n);

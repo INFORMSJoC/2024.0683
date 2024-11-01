@@ -1,13 +1,15 @@
-function [blk, At, b, C, L, init_B_cell, T_U, ML_graph_U, T_V, ML_graph_V] = build_biclustering_shrinking(W, k, init_ML_U, init_CL_U, init_ML_V, init_CL_V, parent_B_cell)
+% Build the size-reduced SDP relaxation of the k-densest disjoint biclique problem
+%
+% :param W: weight matrix n x m
+% :param k: number of biclusters
+% :param init_ML_U: matrix of must-link constraints between vertices in U (n_ml_U x 2)
+% :param init_CL_U: matrix of cannot-link constraints between vertices in U (n_cl_U x 2)
+% :param init_ML_V: matrix of must-link constraints between vertices in V (n_ml_V x 2)
+% :param init_CL_V: matrix of cannot-link constraints between vertices in V (n_cl_V x 2)
+% :param parent_Bcell: valid inequalities for the parent node
+% :returns problem data in SDPNAL+ format
 
-    % W: weight matrix n x m
-    % k: number of clusters
-    % init_ML_U: matrix of must-link constraints between vertices in U (n_ml_U x 2)
-    % init_CL_U: matrix of cannot-link constraints between vertices in U (n_cl_U x 2)
-    % init_ML_V: matrix of must-link constraints between vertices in V (n_ml_V x 2)
-    % init_CL_V: matrix of cannot-link constraints between vertices in V (n_cl_V x 2)
-    % parent_Bcell: valid inequalities for the parent node
-    % return problem data in SDPNAL+ format
+function [blk, At, b, C, L, init_B_cell, T_U, ML_graph_U, T_V, ML_graph_V] = build_biclustering_shrinking(W, k, init_ML_U, init_CL_U, init_ML_V, init_CL_V, parent_B_cell)
 
     [original_n, original_m] = size(W);
     

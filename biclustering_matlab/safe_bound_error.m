@@ -1,3 +1,10 @@
+% Post-processing using error bounds
+%
+% :param blk, At, C, b, y, Z2, Bt, y2, l: SDPNAL+ output
+% :param ub_max_eig: upper bound on the largest eigenvalue
+% :returns ub0: not valid upper bound
+% :returns ub: valid upper bound
+
 function [ub0, ub] = safe_bound_error(blk, At, C, b, y, Z2, Bt, y2, l, ub_max_eig)
   
   % Post-processing through error bounds

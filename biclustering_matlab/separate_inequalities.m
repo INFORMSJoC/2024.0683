@@ -1,3 +1,15 @@
+% Separation routine for hypermetric inequalities
+%
+% :param Z: solution of the SDP relaxation
+% :param n: number of rows
+% :param m: number of columns
+% :param eps: tolerance for checking the violation
+% :param max_sep: maximum number of inequalities to separate
+% :param perc_ineq: percentage of inequalities to keep
+% :returns [B_cell, n_ineq]: SDPNAL+ data encoding lhs constraint matrix
+%  and the number of valid inequalities
+
+
 function [B_cell, n_ineq] = separate_inequalities(Z, n, m, eps, max_sep, perc_ineq)
 
     B_cell = [];

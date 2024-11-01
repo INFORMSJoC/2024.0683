@@ -1,3 +1,11 @@
+% This is the main function that is called by the C++ code. It solve the
+% SDP relaxation at the root node
+%
+% :param W: weight matrix n x m
+% :param k: number of biclusters
+% :param params: configuration file (see solve_biclustering_shrinking.m)
+% :returns Matlab struct that maps the C++ struct SDPResult
+
 function result = call_solve_biclustering_root(W, k, params)
 
     disp(size(W))

@@ -7,7 +7,12 @@
 #include "Node.h"
 #include "ThreadPool.h"
 
-// root
+/// It solves the SDP relaxation at the root node
+/// @param matlabPtr pointer to the Matlab session
+/// @param factory Matlab data factory
+/// @param W data matrix
+/// @param k number of clusters
+/// @return SDPResult struct
 SDPResult solve_sdp(std::unique_ptr<matlab::engine::MATLABEngine> &matlabPtr, matlab::data::ArrayFactory &factory, arma::mat &W, int k) {
 
     // convert data
@@ -67,7 +72,20 @@ SDPResult solve_sdp(std::unique_ptr<matlab::engine::MATLABEngine> &matlabPtr, ma
     return SDPResult{n, m, lb, ub, Xu_assignment, Xv_assignment, n_ineq, cp_iter, cp_flag, branching_type, i_idx, j_idx, B_vector};
 }
 
-// lower bound must link and cannot link
+/// It solves the SDP relaxation with must-link and cannot-link constraints
+/// @param matlabPtr pointer to the Matlab session
+/// @param factory Matlab data factory
+/// @param W data matrix
+/// @param k number of clusters
+/// @param parent_B_vector Inequalities from the parent node
+/// @param global_lb global lower bound
+/// @param global_Xu global row-assignment matrix
+/// @param global_Xv global column-assignment matrix
+/// @param global_ml_pairs_U must-link constraints in U
+/// @param global_cl_pairs_U cannot-link constraints in U
+/// @param global_ml_pairs_V must-link constraints in V
+/// @param global_cl_pairs_V cannot-link constraints in V
+/// @return SDPResults struct
 SDPResult solve_sdp(std::unique_ptr<matlab::engine::MATLABEngine> &matlabPtr, matlab::data::ArrayFactory &factory,
         arma::mat &W, int k, std::vector<arma::sp_mat> &parent_B_vector, double global_lb, arma::sp_mat &global_Xu, arma::sp_mat &global_Xv,
         std::vector<std::pair<int, int>> &global_ml_pairs_U, std::vector<std::pair<int, int>> &global_cl_pairs_U,
@@ -144,7 +162,15 @@ SDPResult solve_sdp(std::unique_ptr<matlab::engine::MATLABEngine> &matlabPtr, ma
 }
 
 
-
+/// Create two children nodes
+/// @param node_gap relative optimality gap at the node
+/// @param node node data
+/// @param branching_type branch on U or V
+/// @param i branching index i
+/// @param j branching index j
+/// @param parent parent node
+/// @param shared_data shared data between the nodes in the queue
+/// @return two nodes and their data
 std::pair<JobData *, JobData *> create_cl_ml_jobs(double node_gap, SDPNode *node, int branching_type, int i, int j, NodeData *parent, SharedData *shared_data) {
 
 	if (node_gap <= branch_and_bound_tol) {
@@ -213,6 +239,12 @@ std::pair<JobData *, JobData *> create_cl_ml_jobs(double node_gap, SDPNode *node
 
 }
 
+/// Build sub-problem
+/// @param job_type type of node
+/// @param node_data node data struct
+/// @param input_data input data struct
+/// @param shared_data shared data between the nodes in the queue
+/// @return two nodes and their data
 std::pair<JobData *, JobData *> build_child_problem(int job_type, NodeData *node_data, InputData *input_data, SharedData  *shared_data) {
 
     auto *matlab_struct = new MatlabStruct();
@@ -311,6 +343,11 @@ std::pair<JobData *, JobData *> build_child_problem(int job_type, NodeData *node
 }
 
 
+/// Builds the problem at the root node
+/// @param matlab_struct Matlab struct containing the pointer to the session and the factory
+/// @param input_data input data struct
+/// @param shared_data shared data between the nodes in the queue
+/// @return node data for the root node
 std::pair<JobData *, JobData *> build_root_problem(MatlabStruct *matlab_struct, InputData *input_data, SharedData *shared_data) {
 
     // init root
@@ -363,10 +400,14 @@ std::pair<JobData *, JobData *> build_root_problem(MatlabStruct *matlab_struct, 
     return create_cl_ml_jobs(node_gap, root, branching_type, i, j, nullptr, shared_data);
 }
 
+/// Executes the branch-and-bound algorithm
+/// @param W data matrix (n x m)
+/// @param k number of clusters
 void sdp_branch_and_bound(arma::mat &W, int k) {
 
     int n_thread = branch_and_bound_parallel;
 
+    // select the visiting strategy
     JobAbstractQueue *queue;
     switch (branch_and_bound_visiting_strategy) {
         case DEPTH_FIRST:
@@ -418,6 +459,7 @@ void sdp_branch_and_bound(arma::mat &W, int k) {
         pool.addJob(ml_job);
     }
 
+    // main branch-and-bound loop
     while (true) {
 
         {

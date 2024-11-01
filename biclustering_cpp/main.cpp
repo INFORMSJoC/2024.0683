@@ -4,40 +4,58 @@
 #include <armadillo>
 #include "sdp_branch_and_bound.h"
 
+
+
 // data full path
 const char *data_path;
+// full path of the log file
 const char *log_path;
+// full path of the output assignment
 const char *result_path;
 std::ofstream log_file;
 
-// branch and bound
+// branch and bound tolerance
 double branch_and_bound_tol;
+// number of threads
 int branch_and_bound_parallel;
+// maximum number of nodes
 int branch_and_bound_max_nodes;
+// visiting strategy
 int branch_and_bound_visiting_strategy;
 
-// matlab
+// number of threads for the Matlab session at the root
 int matlab_session_threads_root;
+// number of threads for the Matlab session
 int matlab_session_threads_child;
 
-// sdpnal
+// full path of SDPNAL+
 const char *sdp_solver_folder;
+// SDPNAL+ accuracy tolerance
 double sdp_solver_tol;
+// SDPNAL+ verbosity level
 int sdp_solver_verbose;
 
-// cutting plane
+// cutting plane iterations
 int cp_max_iter;
+// cutting plane tolerance
 double cp_tol;
+// maximum number of valid inequalities
 int cp_max_ineq;
+// percentage of valid inequalities
 double cp_perc_ineq;
+// tolerance for checking violated constraints
 double cp_eps_ineq;
+// tolerance for checking inactive constraints
 double cp_eps_active;
 
-// heuristic
+// full path of Gurobi
 const char *gurobi_folder;
+// Gurobi verbosity level
 int heuristic_verbose;
 
-
+/// Function that reads the parameters in the configuration file
+/// @param config_file path of the configuration file
+/// @return a map where the key is the parameter name and the value is its value
 std::map<std::string, std::string> read_params(std::string &config_file) {
 
     std::map<std::string, std::string> config_map = {};
@@ -63,7 +81,11 @@ std::map<std::string, std::string> read_params(std::string &config_file) {
     return config_map;
 }
 
-// read data Ws
+/// Function that reads the data matrix and its size
+/// @param filename path of the data matrix
+/// @param n number of rows
+/// @param d number of columns
+/// @return data matrix
 arma::mat read_data(const char *filename, int &n, int &d) {
     std::ifstream file(filename);
     if (!file) {
@@ -81,7 +103,8 @@ arma::mat read_data(const char *filename, int &n, int &d) {
     return Ws;
 }
 
-
+/// Run the branch-and-cut algorithm
+///  <W_PATH> <K> <LOG_PATH> <RESULT_PATH>
 void run(int argc, char **argv) {
 
     std::string config_file = "config.txt";

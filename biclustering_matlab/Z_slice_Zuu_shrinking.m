@@ -1,3 +1,10 @@
+% Function that adds constraints to the Zuu block of smaller size
+%
+% :param n: number of rows
+% :param m: number of columns
+% :param e: vector of cardinalities in each connected component
+% :returns: lhs constraint matrix in SDPNAL+ format
+
 function [A_rowsum, A_trace] = Z_slice_Zuu_shrinking(n, m, e)
 
     % e_U = T_U 1_originaln (new size is n) Diag(e_U) = T_U T_U^\top

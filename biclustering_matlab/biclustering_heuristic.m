@@ -1,3 +1,13 @@
+% Heuristic procedure for finding feasible bicliques
+%
+% :param Z: solution of the SDP relaxation
+% :param W: data matrix (n x m)
+% :param k: number of bicliques
+% :param verbose: verbosity level of Gurobi
+% :returns best_lb: lower bound
+% :returns best_Xu: row-assignment matrix (n x k)
+% :returns best_Xv: column-assignment matrix (m x k)
+
 function [best_lb, best_Xu, best_Xv] = biclustering_heuristic(Z, W, k, verbose)
 
     [n, m] = size(W);

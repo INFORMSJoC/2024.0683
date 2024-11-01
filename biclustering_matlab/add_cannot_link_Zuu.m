@@ -1,5 +1,12 @@
+% Function that adds cannot-link constraints to Zuu
+%
+% :param n: number of rows
+% :param m: number of columns
+% :param CL: matrix of cannot-link constraints
+% :returns: lhs constraint matrix and rhs vector in SDPNAL+ format
+
 function [A_cell_Z_cl, b_cl] = add_cannot_link_Zuu(n, m, CL)
-    
+
     n_cl = size(CL, 1);
     A_cell_Z_cl = cell(1, n_cl);
     b_cl = zeros(n_cl, 1);

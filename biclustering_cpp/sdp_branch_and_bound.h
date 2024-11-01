@@ -8,8 +8,8 @@
 
 typedef struct MatlabStruct {
 
-    std::unique_ptr<matlab::engine::MATLABEngine> matlabPtr;
-    matlab::data::ArrayFactory factory;
+    std::unique_ptr<matlab::engine::MATLABEngine> matlabPtr; // pointer to Matlab session
+    matlab::data::ArrayFactory factory; // Matlab factory
 
 } MatlabStruct;
 
@@ -28,17 +28,17 @@ typedef struct SharedData {
     std::mutex queueMutex;
 
     double global_lb;
-    arma::sp_mat global_Xu;
-    arma::sp_mat global_Xv;
-    double gap;
-    int n_nodes;
+    arma::sp_mat global_Xu; // row-assignment matrix
+    arma::sp_mat global_Xv; // column-assignment matrix
+    double gap; // relative optimality gap
+    int n_nodes; // number of nodes
 
 } SharedData;
 
 typedef struct InputData {
 
-    arma::mat W;
-    int k;
+    arma::mat W; // data matrix
+    int k; // number of clusters
 
 } InputData;
 

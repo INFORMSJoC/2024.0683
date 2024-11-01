@@ -1,3 +1,10 @@
+% Build the transformation matrix for reducing the SDP size
+%
+% :param n: number of rows
+% :param ML: matrix of must-link constraints
+% :returns T: transformation matrix
+% :returns G: graph with connected components
+
 function [T, G] = build_T(n, ML)
     
     n_ml = size(ML, 1);
